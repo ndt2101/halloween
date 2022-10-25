@@ -21,6 +21,14 @@ public class UserEntity extends BaseEntity {
 
     @Column
     @NotBlank
-    private String username;
+    private String account;
+
+    @Column
+    @NotBlank
+    private String fullName;
+
+    @Column
+    @NotBlank
+    private String password;
 
 }

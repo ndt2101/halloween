@@ -6,9 +6,9 @@ import org.springframework.lang.NonNull;
 import java.util.Optional;
 
 public interface UserRepository extends JpaRepository<UserEntity, Long> {
-    Boolean existsByUsername(String loginName);
+    Boolean existsByAccount(String loginName);
     @NonNull
     Optional<UserEntity> findById(@NonNull Long id);
-    Optional<UserEntity> findByUsername(String loginName);
+    Optional<UserEntity> findByAccount(String loginName);
 }
 

@@ -23,7 +23,7 @@ public class JwtUtils {
     private Long timeExpiration;
 
     public Optional<String> getJwtFromRequest(HttpServletRequest request) {
-        return Optional.ofNullable(request.getHeader("Authentication"))
+        return Optional.ofNullable(request.getHeader("Authorization"))
                 .filter((bearerToken) -> bearerToken.startsWith("Bearer "))
                 .map((bearerToken) -> bearerToken.substring(7));
     }

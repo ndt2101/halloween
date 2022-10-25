@@ -8,6 +8,7 @@ import org.springframework.security.authentication.InternalAuthenticationService
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -17,7 +18,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String loginName) throws AuthenticationException {
-        UserEntity userLoginData = userRepository.findByUsername(loginName)
+        UserEntity userLoginData = userRepository.findByAccount(loginName)
                 .orElseThrow(() -> new InternalAuthenticationServiceException("Username is incorrect!"));
         return UserPrincipal.create(userLoginData);
     }

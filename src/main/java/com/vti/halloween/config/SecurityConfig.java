@@ -45,36 +45,33 @@ public class SecurityConfig {
         return configuration.getAuthenticationManager();
     }
 
-
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws Exception {
         AuthenticationManagerBuilder authenticationManagerBuilder = httpSecurity.getSharedObject(AuthenticationManagerBuilder.class);
         authenticationManagerBuilder.userDetailsService(userDetailService).passwordEncoder(passwordEncoder());
         AuthenticationManager authenticationManager = authenticationManagerBuilder.build();
         httpSecurity
-//                .cors()
-//                .configurationSource(request -> {
-//                    CorsConfiguration configuration = new CorsConfiguration();
-//                    configuration.applyPermitDefaultValues();
-//                    configuration.setAllowedMethods(Arrays.asList("DELETE", "PUT", "PATCH"));
-//                    return configuration;
-//                })
-//                .and()
-//                .csrf()
-//                .disable()
+                .cors()
+                .configurationSource(request -> {
+                    CorsConfiguration configuration = new CorsConfiguration();
+                    configuration.applyPermitDefaultValues();
+                    configuration.setAllowedMethods(Arrays.asList("DELETE", "PUT", "PATCH"));
+                    return configuration;
+                })
+                .and()
+                .csrf()
+                .disable()
                 .authorizeRequests()
-//                .antMatchers("/api/auth/**").permitAll()
+                .antMatchers("/api/auth/**").permitAll()
                 .anyRequest()
                 .authenticated()
                 .and()
-                .oauth2Login()
-                .and()
                 .authenticationManager(authenticationManager)
-//                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
 //                .and()
 //                .exceptionHandling()
 //                .authenticationEntryPoint(authenticationEntryPoint)
-//                .and()
+                .and()
                 .addFilterAfter(jwtAuthenticationFilter, ExceptionTranslationFilter.class);
         return httpSecurity.build();
     }

@@ -5,10 +5,14 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
 
 @Data
 @AllArgsConstructor
@@ -20,18 +24,20 @@ public class UserPrincipal implements UserDetails {
     private String username;
     private String password;
 
+    private Collection<? extends GrantedAuthority> authorities;
+
     public static UserPrincipal create(UserEntity userAccount) {
         return UserPrincipal.builder()
                 .id(userAccount.getId())
-                .username(userAccount.getUsername())
-                .password("")
+                .username(userAccount.getAccount())
+                .password(userAccount.getPassword())
+                .authorities(Arrays.asList(new SimpleGrantedAuthority("USER_ROLE")))
                 .build();
-
     }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return null;
+        return authorities;
     }
 
     @Override

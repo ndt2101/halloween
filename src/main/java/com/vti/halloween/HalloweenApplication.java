@@ -16,10 +16,9 @@ import java.util.List;
 public class HalloweenApplication {
 
     @Autowired
-    private PasswordEncoder passwordEncoder;
-
-    @Autowired
     private UserRepository userRepository;
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     public static void main(String[] args) {
         SpringApplication.run(HalloweenApplication.class, args);
@@ -29,7 +28,7 @@ public class HalloweenApplication {
     CommandLineRunner commandLineRunner(){
         return args -> {
             List<UserEntity> dummy = new ArrayList<>();
-            dummy.add(new UserEntity("tuan.nguyendinh"));
+            dummy.add(new UserEntity("tuan.nguyendinh", "Nguyễn Đình Tuấn", passwordEncoder.encode("tuan.nguyendinh")));
             userRepository.saveAll(dummy);
         };
     }
