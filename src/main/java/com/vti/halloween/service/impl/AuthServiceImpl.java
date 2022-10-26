@@ -62,7 +62,7 @@ public class AuthServiceImpl implements AuthService {
                 String jwt = jwtUtils.generateToken(username);
                 return new LoginResponse(userEntity.getFullName(), jwt);
         } else {
-            throw new InternalAuthenticationServiceException("invalid email token!");
+            throw new InternalAuthenticationServiceException("You must use vti organization email!");
         }
     }
 

@@ -24,13 +24,13 @@ public class HalloweenApplication {
         SpringApplication.run(HalloweenApplication.class, args);
     }
 
-    @Bean
-    CommandLineRunner commandLineRunner(){
-        return args -> {
-            List<UserEntity> dummy = new ArrayList<>();
-            dummy.add(new UserEntity("tuan.nguyendinh", "Nguyễn Đình Tuấn", passwordEncoder.encode("tuan.nguyendinh")));
-            userRepository.saveAll(dummy);
-        };
-    }
+//    @Bean
+//    CommandLineRunner commandLineRunner(){
+//        return args -> {
+//            List<UserEntity> dummy = new ArrayList<>();
+//            dummy.add(new UserEntity("tuan.nguyendinh", "Nguyễn Đình Tuấn", passwordEncoder.encode("tuan.nguyendinh")));
+//            userRepository.saveAll(dummy);
+//        };
+//    }
 
 }

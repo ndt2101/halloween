@@ -20,6 +20,7 @@ import org.springframework.security.web.access.ExceptionTranslationFilter;
 import org.springframework.web.cors.CorsConfiguration;
 
 import java.util.Arrays;
+import java.util.Collections;
 
 @Configuration
 @EnableWebSecurity
@@ -55,7 +56,8 @@ public class SecurityConfig {
                 .configurationSource(request -> {
                     CorsConfiguration configuration = new CorsConfiguration();
                     configuration.applyPermitDefaultValues();
-                    configuration.setAllowedMethods(Arrays.asList("DELETE", "PUT", "PATCH"));
+                    configuration.setAllowedOrigins(Collections.singletonList("*"));
+                    configuration.setAllowedMethods(Arrays.asList("GET", "PUT", "POST", "PATCH", "DELETE", "OPTIONS"));
                     return configuration;
                 })
                 .and()
@@ -63,6 +65,7 @@ public class SecurityConfig {
                 .disable()
                 .authorizeRequests()
                 .antMatchers("/api/auth/**").permitAll()
+                .antMatchers("/api/user/seed").permitAll()
                 .anyRequest()
                 .authenticated()
                 .and()

@@ -12,9 +12,9 @@ import java.util.Map;
 public class BaseController<T> {
 
     public ResponseEntity<?> successfulResponse(T data) {
-        Map<String, T> result = new HashMap<>();
-        result.put("data", data);
-        return ResponseEntity.status(HttpStatus.OK).body(new ResponseDTO<>(HttpStatus.OK.value(), Common.SUCCESSFUL_RESPONSE, result));
+//        Map<String, T> result = new HashMap<>();
+//        result.put("data", data);
+        return ResponseEntity.status(HttpStatus.OK).body(new ResponseDTO<>(HttpStatus.OK.value(), Common.SUCCESSFUL_RESPONSE, data));
     }
 
     public ResponseEntity<?> successfulListResponse(List<T> metaData) {
@@ -23,10 +23,8 @@ public class BaseController<T> {
         return ResponseEntity.ok(new ResponseDTO<>(HttpStatus.OK.value(), Common.SUCCESSFUL_RESPONSE, result));
     }
 
-    public ResponseEntity<?> unsuccessfulResponse(T error, HttpStatus httpStatus) {
-        Map<String, T> result = new HashMap<>();
-        result.put("error", error);
-        return ResponseEntity.status(httpStatus).body(new ResponseDTO<>(httpStatus.value(), Common.UNSUCCESSFUL_RESPONSE, result));
+    public ResponseEntity<?> unsuccessfulResponse(String error, HttpStatus httpStatus) {
+        return ResponseEntity.status(httpStatus).body(new ResponseDTO<>(httpStatus.value(), error, null));
     }
 
     public ResponseEntity<?> unsuccessfulListResponse(List<T> metaError, HttpStatus httpStatus) {

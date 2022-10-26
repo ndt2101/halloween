@@ -36,11 +36,11 @@ public class CustomExceptionHandler extends BaseController<Object> {
         return this.unsuccessfulResponse(exception.getMessage(), HttpStatus.NOT_FOUND);
     }
 
-//    @ExceptionHandler(ApplicationException.class)
-//    public ResponseEntity<?> handleNotFoundException(ApplicationException exception) {
-//        log.error("Application exception with message: \n{}", exception.getMessage());
-//        return this.unsuccessfulResponse(exception.getMessage(), exception.getStatus());
-//    }
+    @ExceptionHandler(ApplicationException.class)
+    public ResponseEntity<?> handleNotFoundException(ApplicationException exception) {
+        log.error("Application exception with message: \n{}", exception.getMessage());
+        return this.unsuccessfulResponse(exception.getMessage(), exception.getStatus());
+    }
 
     @ExceptionHandler(InternalAuthenticationServiceException.class)
     public ResponseEntity<?> handleAuthenticationException(InternalAuthenticationServiceException exception) {

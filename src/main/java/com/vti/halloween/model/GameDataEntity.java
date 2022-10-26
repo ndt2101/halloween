@@ -12,31 +12,17 @@ import javax.persistence.Table;
 import javax.validation.constraints.NotBlank;
 
 @Entity
-@Table(name = "user")
+@Table(name = "game_data")
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class UserEntity extends BaseEntity {
-
-    @Column
-    @NotBlank
-    private String code;
+public class GameDataEntity extends BaseEntity {
 
     @Column(unique = true)
     @NotBlank
     private String account;
 
     @Column
-    @NotBlank
-    private String fullName;
-
-    @Column
-    @NotBlank
-    private String unit;
-
-    @Column
-    @NotBlank
-    private String password;
-
+    private Integer num;
 }
