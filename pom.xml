@@ -79,11 +79,11 @@
             <version>1.33.0</version>
         </dependency>
 
-<!--        <dependency>-->
-<!--            <groupId>com.google.firebase</groupId>-->
-<!--            <artifactId>firebase-admin</artifactId>-->
-<!--            <version>9.1.0</version>-->
-<!--        </dependency>-->
+        <dependency>
+            <groupId>com.google.firebase</groupId>
+            <artifactId>firebase-admin</artifactId>
+            <version>9.1.0</version>
+        </dependency>
 
         <!-- https://mvnrepository.com/artifact/org.apache.poi/poi-ooxml -->
         <dependency>

@@ -1,5 +1,8 @@
 package com.vti.halloween.config;
 
+import com.google.auth.oauth2.GoogleCredentials;
+import com.google.firebase.FirebaseApp;
+import com.google.firebase.FirebaseOptions;
 import com.vti.halloween.security.JwtAuthenticationFilter;
 import com.vti.halloween.service.impl.UserDetailsServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +22,9 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.access.ExceptionTranslationFilter;
 import org.springframework.web.cors.CorsConfiguration;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.Collections;
 
@@ -44,6 +50,15 @@ public class SecurityConfig {
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration configuration) throws Exception {
         return configuration.getAuthenticationManager();
+    }
+    @Bean
+    public void initFirebase() throws IOException {
+        FileInputStream refreshToken = new FileInputStream("src/main/resources/vti-halloween-firebase-adminsdk-4ph7l-27b0c9ce2c.json");
+
+        FirebaseOptions options = FirebaseOptions.builder()
+                .setCredentials(GoogleCredentials.fromStream(refreshToken))
+                .build();
+        FirebaseApp.initializeApp(options);
     }
 
     @Bean
@@ -71,9 +86,9 @@ public class SecurityConfig {
                 .and()
                 .authenticationManager(authenticationManager)
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-//                .and()
-//                .exceptionHandling()
-//                .authenticationEntryPoint(authenticationEntryPoint)
+                .and()
+                .exceptionHandling()
+                .authenticationEntryPoint(authenticationEntryPoint)
                 .and()
                 .addFilterAfter(jwtAuthenticationFilter, ExceptionTranslationFilter.class);
         return httpSecurity.build();

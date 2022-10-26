@@ -1,5 +1,6 @@
 package com.vti.halloween.controller;
 
+import com.google.firebase.auth.FirebaseAuthException;
 import com.vti.halloween.base.BaseController;
 import com.vti.halloween.dto.LoginPayload;
 import com.vti.halloween.service.AuthService;
@@ -19,7 +20,7 @@ public class AuthController extends BaseController<Object> {
     private AuthService authService;
 
     @PostMapping("/login")
-    public ResponseEntity<?> login(@RequestBody LoginPayload token) throws GeneralSecurityException, IOException {
+    public ResponseEntity<?> login(@RequestBody LoginPayload token) throws GeneralSecurityException, IOException, FirebaseAuthException {
         return this.successfulResponse(authService.login(token.getToken()));
     }
 
