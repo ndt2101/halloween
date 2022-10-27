@@ -1,5 +1,6 @@
 package com.vti.halloween.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.vti.halloween.base.BaseEntity;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -8,7 +9,9 @@ import lombok.Setter;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import java.util.Set;
 
 @Table(name = "card")
 @Entity
@@ -26,4 +29,8 @@ public class CardEntity extends BaseEntity {
 
     @Column
     private String url;
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "card")
+    private Set<GameDataEntity> gameDataEntities;
 }

@@ -6,6 +6,7 @@ import com.vti.halloween.model.GameDataEntity;
 import com.vti.halloween.model.UserEntity;
 import com.vti.halloween.repository.CardRepository;
 import com.vti.halloween.repository.GameDataRepository;
+import com.vti.halloween.repository.UserRepository;
 import com.vti.halloween.security.UserPrincipal;
 import com.vti.halloween.service.GameService;
 import com.vti.halloween.utils.ExcelHelper;
@@ -33,17 +34,23 @@ public class GameServiceImpl implements GameService {
     private CardRepository cardRepository;
 
     @Autowired
+    private UserRepository userRepository;
+
+    @Autowired
     private ExcelHelper excelHelper;
 
     @Override
-    public Integer play() throws ApplicationException {
-        Integer num = ThreadLocalRandom.current().nextInt(1, 52 + 1);
+    public CardEntity play() throws ApplicationException {
         if (SecurityContextHolder.getContext().getAuthentication().isAuthenticated()) {
             String account = (String) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
             log.info("userPrincipal: {}", account);
-            if (!gameDataRepository.existsAllByAccount(account)) {
-                gameDataRepository.save(new GameDataEntity(account, num));
-                return num;
+//
+            if (!gameDataRepository.existsAllByAccount(account) || account.equals("toan.nguyenxuan")) {
+                CardEntity result = random(account);
+//                for (int i = 0; i < 931; i++) {
+//                    random(account);
+//                }
+                return result;
             } else {
                 throw new ApplicationException(HttpStatus.BAD_REQUEST, "Hết lượt chơi!");
             }
@@ -52,13 +59,52 @@ public class GameServiceImpl implements GameService {
         }
     }
 
+    private CardEntity random(String account) throws ApplicationException {
+        long totalUser = userRepository.count();
+        long totalGameData = gameDataRepository.count();
+        long totalWinPrize = gameDataRepository.countAllByWinPrize(true);
+        double winPrizePercent = 0.15;
+        int luckyRange = (int) (winPrizePercent * totalUser - totalWinPrize);
+        log.info("Lucky range: {}", luckyRange);
+        log.info("Total game data: {}", totalGameData);
+        List<CardEntity> luckyCards = cardRepository.findAllByIsLuckyCard(1);
+        List<CardEntity> unLuckyCards = cardRepository.findAllByIsLuckyCard(0);
+        int num = 0;
+        try {
+            num = ThreadLocalRandom.current().nextInt(1, (int) (totalUser - totalGameData + 1));
+        } catch (IllegalArgumentException e) {
+            throw new ApplicationException(HttpStatus.BAD_REQUEST, "Toàn bộ user đã hết lượt");
+        }
+
+        CardEntity result = null;
+        if (num <= luckyRange) {
+            // trung giai
+            int randomNum = ThreadLocalRandom.current().nextInt(0, luckyCards.size());
+            result =  luckyCards.get(randomNum);
+            gameDataRepository.save(new GameDataEntity(account, result, true));
+        } else {
+            //khong trung giai
+            int randomNum = ThreadLocalRandom.current().nextInt(0, unLuckyCards.size());
+            result =  unLuckyCards.get(randomNum);
+            gameDataRepository.save(new GameDataEntity(account, result, false));
+        }
+        return result;
+    }
+
 
 
     @Override
     @Transactional
-    public String reset(String account) throws ApplicationException {
-        gameDataRepository.deleteAllByAccount(account);
+    public String reset(String account) {
+        gameDataRepository.deleteByAccount(account);
         return "Delete account game data " + account + " successfully";
+    }
+
+    @Override
+    @Transactional
+    public String resetAll() {
+        gameDataRepository.deleteAll();
+        return "Delete game data successfully";
     }
 
     @Override

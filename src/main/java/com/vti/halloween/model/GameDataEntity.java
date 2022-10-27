@@ -6,9 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Table;
+import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 
 @Entity
@@ -23,6 +21,10 @@ public class GameDataEntity extends BaseEntity {
     @NotBlank
     private String account;
 
+    @ManyToOne
+    @JoinColumn(name = "card_id")
+    private CardEntity card;
+
     @Column
-    private Integer num;
+    private boolean winPrize;
 }

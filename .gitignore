@@ -31,3 +31,6 @@ build/
 
 ### VS Code ###
 .vscode/
+
+### firebase###
+src/main/resources/vti-halloween-firebase-adminsdk-4ph7l-27b0c9ce2c.json

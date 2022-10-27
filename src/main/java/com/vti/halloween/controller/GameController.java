@@ -40,4 +40,10 @@ public class GameController extends BaseController<Object> {
     public ResponseEntity<?> reset(@PathVariable("account") String account) throws ApplicationException {
         return this.successfulResponse(gameService.reset(account));
     }
+
+    @PreAuthorize("hasAuthority('ADMIN_ROLE')")
+    @DeleteMapping("/resetAll")
+    public ResponseEntity<?> resetAll() throws ApplicationException {
+        return this.successfulResponse(gameService.resetAll());
+    }
 }
