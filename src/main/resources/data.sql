@@ -1,0 +1,1 @@
+ALTER TABLE card CHANGE COLUMN message message VARCHAR(1000);

@@ -1,4 +1,4 @@
-package com.vti.halloween.repository;
+package com.vti.halloween.model;
 
 import com.vti.halloween.base.BaseEntity;
 import lombok.AllArgsConstructor;

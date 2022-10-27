@@ -28,6 +28,6 @@ public class UserServiceImpl implements UserService {
         } catch (IOException e) {
             throw new RuntimeException("fail to store excel data: " + e.getMessage());
         }
-        return null;
+        return "Upload successfully";
     }
 }

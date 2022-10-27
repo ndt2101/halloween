@@ -66,6 +66,7 @@ public class SecurityConfig {
                 .authorizeRequests()
                 .antMatchers("/api/auth/**").permitAll()
                 .antMatchers("/api/user/seed").permitAll()
+                .antMatchers("/api/game/seed").permitAll()
                 .anyRequest()
                 .authenticated()
                 .and()
