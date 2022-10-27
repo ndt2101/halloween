@@ -168,6 +168,14 @@ public class ExcelHelper {
                             }
                             break;
 
+                        case 2:
+                            try {
+                                cardEntity.setUrl(currentCell.getStringCellValue());
+                            } catch (Exception e) {
+                                cardEntity.setUrl(String.valueOf(currentCell.getNumericCellValue()));
+                            }
+                            break;
+
                         default:
                             break;
                     }

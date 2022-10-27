@@ -23,4 +23,7 @@ public class CardEntity extends BaseEntity {
 
     @Column
     private Integer isLuckyCard;
+
+    @Column
+    private String url;
 }

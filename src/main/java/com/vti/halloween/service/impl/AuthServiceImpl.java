@@ -5,9 +5,6 @@ import com.google.api.client.googleapis.auth.oauth2.GoogleIdToken;
 import com.google.api.client.googleapis.auth.oauth2.GoogleIdTokenVerifier;
 import com.google.api.client.http.javanet.NetHttpTransport;
 import com.google.api.client.json.gson.GsonFactory;
-import com.google.auth.oauth2.GoogleCredentials;
-import com.google.firebase.FirebaseApp;
-import com.google.firebase.FirebaseOptions;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthException;
 import com.google.firebase.auth.FirebaseToken;
@@ -19,20 +16,19 @@ import com.vti.halloween.service.AuthService;
 import com.vti.halloween.utils.JwtUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.InternalAuthenticationServiceException;
 import org.springframework.stereotype.Service;
 
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.security.GeneralSecurityException;
+import java.security.Principal;
+import java.util.Collection;
 import java.util.Collections;
 
 
 @Service
 public class AuthServiceImpl implements AuthService {
-
-//    @Value("${auth.client_id}")
-    private String CLIENT_ID = "633008572773-v1ur6rp8c4vtl77olpdqu3rho4d2ui1p.apps.googleusercontent.com";
 
     @Autowired
     private UserRepository userRepository;
@@ -40,18 +36,17 @@ public class AuthServiceImpl implements AuthService {
     @Autowired
     private JwtUtils jwtUtils;
 
+
     @Override
     public LoginResponse login(String token) throws GeneralSecurityException, IOException, FirebaseAuthException {
-//        GoogleIdTokenVerifier verifier = new GoogleIdTokenVerifier.Builder(new NetHttpTransport(), new GsonFactory())
-//                .setAudience(Collections.singletonList(CLIENT_ID))
-//                .build();
-//
-//        GoogleIdToken idToken = verifier.verify(token);
 
-        if (idToken != null) {
+
+        FirebaseToken decodedToken = FirebaseAuth.getInstance().verifyIdToken(token);
+
+        if (decodedToken != null) {
 //            GoogleIdToken.Payload payload = idToken.getPayload();
 
-            String email = idToken.getEmail();
+            String email = decodedToken.getEmail();
 
             String username = email.replace("@vti.com.vn", "");
             System.out.println("User name: " + username);

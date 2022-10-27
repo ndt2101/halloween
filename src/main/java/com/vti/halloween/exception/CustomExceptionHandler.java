@@ -1,5 +1,6 @@
 package com.vti.halloween.exception;
 
+import com.google.firebase.auth.FirebaseAuthException;
 import com.vti.halloween.base.BaseController;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -47,4 +48,11 @@ public class CustomExceptionHandler extends BaseController<Object> {
         log.error("Authentication exception with message: \n{}", exception.getMessage());
         return this.unsuccessfulResponse(exception.getMessage(), HttpStatus.UNAUTHORIZED);
     }
+
+    @ExceptionHandler(FirebaseAuthException.class)
+    public ResponseEntity<?> handleFirebaseAuthException(FirebaseAuthException exception) {
+        log.error("Authentication exception with message: \n{}", exception.getMessage());
+        return this.unsuccessfulResponse(exception.getMessage(), HttpStatus.UNAUTHORIZED);
+    }
+
 }

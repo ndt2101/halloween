@@ -2,6 +2,7 @@ package com.vti.halloween.security;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.authentication.InternalAuthenticationServiceException;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.stereotype.Component;
@@ -18,7 +19,8 @@ public class AuthenticationEntryPointImpl implements AuthenticationEntryPoint {
     public void commence(HttpServletRequest request,
                          HttpServletResponse response,
                          AuthenticationException authException) throws IOException {
-        response.sendError(HttpStatus.UNAUTHORIZED.value(), authException.getMessage());
+        response.sendError(HttpStatus.UNAUTHORIZED.value(), "Response with unauthorized error");
         log.error("Response with unauthorized error");
+
     }
 }
